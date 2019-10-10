@@ -1,0 +1,276 @@
+js调用参数：（action， json_str)
+action: 字符串
+json_str: 参数，如果不需要参数传空字串
+
+接口说明：
+1、获取应用信息（同步）
+action: 'getAppInfo'
+json_str: ''
+
+返回参数: 
+{
+    "channelId": 10001,             // 整形 账号渠道号 (配置在底层)
+    "regId": 1001,                  // 整形 注册渠道号（配置在底层）
+    "payId": 101,                   // 整形 支付渠道号 
+    "versionName": "1.0.1",         // 字串 应用版本号
+    "versionCode": 1,               // 整形 应用版本号
+    "imei": "FD2343545454656456",   // 字串 设备唯一识别码
+    "mobileMode": "Meizu,E2",       // 字串 手机设备型号
+    "sdkVersion": "8.0",            // 字串 手机系统版本
+    "packageName": "com.phone.fish",// 字串 包名
+    "inOrOutInternet": 0,           // 整形 0-外网  1-内网  2-QC
+    "isThirdLogin": false,          // 布尔 是否第三方登陆
+}
+
+2、显示游戏界面
+
+3、第三方登陆（异步）
+action: 'login'
+json_str: {
+    "loignType": 3,                 // 整形 2-账号   3-第三方（含微信）5-闲聊
+}
+
+返回参数：
+{
+    "action": "login",
+    "code": 0,                      // 0: 成功  -101:取消登陆   -102:未安装微信  其他：失败
+    "msg": {
+        "password": "",             // 字串 密码
+        "nickname": "5aSP6IuP5oms8J+Zg+Wwj+aci+WPiw==", // base64格式
+        "userId": "oEqcXs2x61tTADGSQs_wtsY6nK4E",   // 字串 第三方渠道唯一标识（微信：unionid）
+        "account": "",              // 字串 账号
+        "headimgurl": "http://thirdwx.qlogo.cn/mmopen/vi_32/sdf..../132",       // 字串 头像url
+        "userId2": "orvIa0uN5qrByzZZOIZobRqlge50",          // 微信sdk返回的openid
+        "access_token": "72rfy6896734tno3g890y983tbn3f289y3h4t34ty68"   // 字串 token
+    }
+}
+
+4、注销账号(异步)
+action: 'logout',
+json_str: ''
+
+返回参数：
+{
+    "action": "logout",
+    "code": 0,
+    "msg": "logout succ" 
+}
+
+5、退出游戏（异步）
+action: 'exit'  // 退出游戏客户端，只是单纯的关闭客户端，不涉及到账号清空。如果是第三方退出，直接调用第三方退出接口。
+json_str: ''
+
+返回参数
+{
+    "action": "exit",
+    "code": 0,
+    "msg": "exit succ"
+}
+
+
+6、获取网络类型（同步）
+action: getNetworkType
+json_str: ''
+
+返回参数：
+{
+    "networkType": 1,           // 整形 网络类型，0-无网，1-wifi，2-移动，3-其他
+    "networkState": "wifi"      // 字串 类型描述
+}
+
+7、手机电量（同步）
+action: 'getBattery'
+json_str: ''
+
+返回参数：获取手机电量，直接以字符串形式返回剩余电量。
+‘60’
+
+8、复制文本（异步）
+action: 'copy'
+json_str: {
+    "copyData": "6L+Z5piv6KaB5aSN5Yi255qE5YaF5a65"
+}
+
+返回结果：
+{
+    "action": "copy",
+    "code": 0,
+    "msg": "copy succ"
+}
+
+9、粘贴文本（异步）
+action: 'paste'
+json_str: ''
+
+返回参数：
+{
+    "action": "paste",
+    "code": 0,
+    "msg": "5LuO5Ymq5YiH5p2/6I635Y+W55qE5paH5pys"
+}
+
+10、获取定位（同步）
+action: 'getLocation'
+json_str: ''
+
+返回参数：
+{
+    "country": "中国",
+    "province": "江苏省",
+    "city": "苏州市",
+    "district": "吴中区",
+    "street": "郭新东路100号",
+    "locationX": 31.2983400000,
+    "locationY": 120.5831900000,
+    "source": "LBS"                 // 获取定位来源，LBS-百度定位，WEB-web定位
+}
+
+11、分享(异步)
+action: 'share'
+json_str:
+{
+    "shareMode": 1,                             // 1-微信，2-支付宝，3-QQ 4-闲聊
+    "shareType": 1,                             // 1-富文本(含图片、链接以及文字)
+    "shareTitle": "测试微信分享",                 // 分享标题
+    "shareDesc": "这是分享到微信朋友圈的消息",      // 分享内容描述
+    "shareImageUrl": "https://yours/image.png", // 分享图片链接
+    "shareWebUrl": "https://yours/fish.html",   // 分享网址链接
+    "shareScene": 1                             // 0-会话，1-朋友圈
+}
+
+12、网络变化事件
+action: 'onNetworkChanged'
+该接口由SDK主动通知游戏，无需调用！
+{
+    "action": "onNetworkChanged",
+    "code": 0,
+    "msg": {
+        "networkType": 1,                       // 网络类型，0-无网，1-wifi，2-移动，3-其他
+        "networkState": "wifi"
+    }
+}
+
+13、腾讯语音（异步）
+action: 'gvoice'
+json_str:
+{
+    "recordType": 0,
+    "userId": "324324"
+}
+
+recordType: 
+1、初始化
+请求：{
+    "recordType": 0,
+    "userId": "324324"
+}
+返回：
+{
+    "action": "gvoice",
+    "code": 0,
+    "msg": {
+        "recordType": 0
+    }
+}
+
+2、开始录音
+请求：
+{
+    "recordType": 1
+}
+返回：
+{
+    "action": "gvoice",
+    "code": 0,
+    "msg": {
+        "recordType": 1
+    }
+}
+
+3、停止录音
+请求：{
+    "recordType": 2
+}
+返回：
+{
+    "action": "gvoice",
+    "code": 0,
+    "msg": {
+        "recordType": 2,
+        "uploadFileID": "record123"
+    }
+}
+4、下载录音文件
+请求：
+{
+    "recordType": 3,
+    "downloadFileID": "record123" //即上面的uploadFileID
+}
+返回：
+{
+    "action": "gvoice",
+    "code": 0,
+    "msg": {
+        "recordType": 3,
+        "downloadFileID": "record123"
+    }
+}
+
+5、停止播放
+请求：
+{
+    "recordType": 4
+}
+
+返回：
+{
+    "action": "gvoice",
+    "code": 0,
+    "msg": {
+        "recordType": 4,
+    }
+}
+
+6、暂停播放
+请求：
+{
+    "recordType": 5
+}
+返回：
+{
+    "action": "gvoice",
+    "code": 0,
+    "msg": {
+        "recordType": 5
+    }
+}
+
+7、恢复播放
+请求：
+{
+    "recordType": 6
+}
+
+返回：
+{
+    "action": "gvoice",
+    "code": 0,
+    "msg": {
+        "recordType": 6
+    }
+}
+8、获取声量大小
+请求：
+{
+    "recordType": 7
+}
+返回：
+{
+    "action": "gvoice",
+    "code": 0,
+    "msg": {
+        "recordType": 7
+        "micLv": 5
+
+    }
+}
