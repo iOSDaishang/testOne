@@ -63,6 +63,8 @@
     
 
     NSLog(@"test123123");
+    NSLog(@"test123123");
+    NSLog(@"test123123");
 
 //    [XianliaoApiManager registerApp:@"yapSYw221SGViW7N"];
     
